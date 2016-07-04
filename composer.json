@@ -1,0 +1,16 @@
+{
+  "name": "mc388/slim-composer-installer",
+  "type": "composer-plugin",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Mc388\\SlimComposerInstaller\\": "src"
+    }
+  },
+  "extra": {
+    "class": "Mc388\\SlimComposerInstaller\\Plugin"
+  },
+  "require": {
+    "composer-plugin-api": "^1.0"
+  }
+}
