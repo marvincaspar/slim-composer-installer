@@ -44,10 +44,10 @@ $app->run();
 ### Slim Module
 
 There are a few requirements to your Slim 3 module to use this package.
-The composer package type must be `slim-module` and there must be a `bootstrap.php` file in the root directory of your package.
+The composer package type must be `slim-module` and have a `psr-4` attribute. Put all your routes and containers to a `src/app.php` file.
 The bootstrap file contains all routes and contains from your module.
 
-Heres an example for the `composer.json` file
+Here is an example for the `composer.json` file
 
 ```
 {
@@ -65,10 +65,12 @@ Heres an example for the `composer.json` file
 ```
 
 
-Next an example for the `bootstrap.php` file
+Next an example for the `src/app.php` file
 
 ```
 <?php
+
+// no definition of $app or $container required
 
 $app->get('/test', function ($request, $response) {
   return 'test';
