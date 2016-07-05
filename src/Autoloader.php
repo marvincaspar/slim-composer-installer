@@ -14,7 +14,9 @@ namespace Mc388\SlimComposerInstaller;
  */
 class Autoloader
 {
-    const CONFIG_FILE_PATH = 'config/modules.json';
+    const CONFIG_FILE_PATH = 'config/';
+    const CONFIG_FILE_NAME = 'modules.json';
+    const REQUIRE_FILE = 'src/app.php';
 
     /**
      * @return array
@@ -23,17 +25,17 @@ class Autoloader
     {
         $installedModules = [];
         $moduleNames = [];
-        $configPath = $_SERVER['DOCUMENT_ROOT'] . '/../' . self::CONFIG_FILE_PATH;
+        $configPath = $_SERVER['DOCUMENT_ROOT'] . '/../' . self::CONFIG_FILE_PATH . self::CONFIG_FILE_NAME;
 
         if (file_exists($configPath)) {
             $configFileContent = file_get_contents($configPath);
             $installedModules = json_decode($configFileContent, true);
         }
 
-        foreach ($installedModules as $name => $psr4) {
+        foreach ($installedModules as $name => $namespace) {
             array_push($moduleNames, $name);
         }
 
-        return $moduleNames;
+        return $installedModules;
     }
 }
