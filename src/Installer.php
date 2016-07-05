@@ -19,8 +19,6 @@ use Composer\Repository\InstalledRepositoryInterface;
 class Installer extends LibraryInstaller
 {
     const PACKAGE_TYPE = 'slim-module';
-    const CONFIG_FILE_PATH = 'config/';
-    const CONFIG_FILE_NAME = 'modules.json';
 
     /**
      * {@inheritDoc}
@@ -38,11 +36,11 @@ class Installer extends LibraryInstaller
         $installedModules = [];
 
         // Create config dir if not exists
-        if (!file_exists(self::CONFIG_FILE_PATH)) {
-            mkdir(self::CONFIG_FILE_PATH, 0777, true);
+        if (!file_exists(Autoloader::CONFIG_FILE_PATH)) {
+            mkdir(Autoloader::CONFIG_FILE_PATH, 0777, true);
         }
 
-        $filePath = self::CONFIG_FILE_PATH . self::CONFIG_FILE_NAME;
+        $filePath = Autoloader::CONFIG_FILE_PATH . Autoloader::CONFIG_FILE_NAME;
 
         // Read modules file
         if (file_exists($filePath)) {
@@ -52,12 +50,25 @@ class Installer extends LibraryInstaller
 
         // Get package information
         $name = $package->getPrettyName();
-        $psr4 = key($package->getAutoload()['psr-4']);
+        $autoload = $package->getAutoload();
 
-        // Add package to modules file
-        $installedModules[$name] = $psr4;
-        $prettyJson = json_encode($installedModules, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
-        file_put_contents($filePath, $prettyJson);
+        // Check if psr-4 key exists
+        if (array_key_exists('psr-4', $autoload)) {
+            $module = array(
+                'name' => $name,
+                'namespace' => $autoload['psr-4']
+            );
+            
+            // Add package to modules list
+            array_push($installedModules, $module);
+
+            // Remove duplicated entries
+            $installedModules = array_unique($installedModules, SORT_REGULAR);
+
+            // Write to file
+            $prettyJson = json_encode($installedModules, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
+            file_put_contents($filePath, $prettyJson);
+        }
 
         // Add package to project
         parent::install($repo, $package);
@@ -69,6 +80,8 @@ class Installer extends LibraryInstaller
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
         echo "update";
+
+        parent::update($repo, $initial, $target);
     }
 
     /**
