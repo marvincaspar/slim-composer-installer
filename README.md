@@ -33,7 +33,7 @@ $container = $app->getContainer();
 $autoloader = new Autoloader();
 // Require all Slim 3 modules
 foreach ($autoloader->getModules() as $module) {
-    echo __DIR__ . '/../vendor/' . $module['name'] . '/' . Autoloader::REQUIRE_FILE;
+    require __DIR__ . '/../vendor/' . $module['name'] . '/' . Autoloader::REQUIRE_FILE;
 }
 
 
