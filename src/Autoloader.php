@@ -16,6 +16,7 @@ class Autoloader
 {
     const CONFIG_FILE_PATH = 'config/';
     const CONFIG_FILE_NAME = 'modules.json';
+    const REQUIRE_FILE = 'src/app.php';
 
     /**
      * @return array
@@ -31,10 +32,10 @@ class Autoloader
             $installedModules = json_decode($configFileContent, true);
         }
 
-        foreach ($installedModules as $name => $psr4) {
+        foreach ($installedModules as $name => $namespace) {
             array_push($moduleNames, $name);
         }
 
-        return $moduleNames;
+        return $installedModules;
     }
 }

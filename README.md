@@ -14,29 +14,28 @@ composer require mc388/slim-composer-installer
 
 Next add the autoloader class to your Slim 3 project
 
-```
+```php
 <?php
+
+use Mc388\SlimComposerInstaller\Autoloader;
 
 session_start();
 
 require __DIR__ . '/../vendor/autoload.php';
 
 // Create Slim app
-$app = new \Slim\App([
-    'settings' => [
-        'displayErrorDetails' => true,
-    ],
-]);
-
+$app = new \Slim\App();
 // Fetch DI Container
 $container = $app->getContainer();
 
+
 // Get autoloader instance
-$autoloader = new \Mc388\SlimComposerInstaller\Autoloader();
+$autoloader = new Autoloader();
 // Require all Slim 3 modules
 foreach ($autoloader->getModules() as $module) {
-    require __DIR__ . '/../vendor/' . $module . '/bootstrap.php';
+    echo __DIR__ . '/../vendor/' . $module['name'] . '/' . Autoloader::REQUIRE_FILE;
 }
+
 
 $app->run();
 ```
@@ -44,8 +43,8 @@ $app->run();
 ### Slim Module
 
 There are a few requirements to your Slim 3 module to use this package.
-The composer package type must be `slim-module` and have a `psr-4` attribute. Put all your routes and containers to a `src/app.php` file.
-The bootstrap file contains all routes and contains from your module.
+The composer package type must be `slim-module` and the `autoloader/psr-4` attribute is available.
+
 
 Here is an example for the `composer.json` file
 
@@ -65,9 +64,12 @@ Here is an example for the `composer.json` file
 ```
 
 
+Put all your routes and containers to a `src/app.php` file.
+
+
 Next an example for the `src/app.php` file
 
-```
+```php
 <?php
 
 // no definition of $app or $container required
