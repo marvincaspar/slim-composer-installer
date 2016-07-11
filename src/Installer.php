@@ -44,7 +44,7 @@ class Installer extends LibraryInstaller
         if (array_key_exists('psr-4', $autoload)) {
             $module = array(
                 'name' => $name,
-                'namespace' => $autoload['psr-4']
+                'namespaces' => array_keys($autoload['psr-4'])
             );
 
             // Add package to modules list
