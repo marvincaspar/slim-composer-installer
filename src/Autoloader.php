@@ -16,7 +16,6 @@ class Autoloader
 {
     const CONFIG_FILE_PATH = 'config/';
     const CONFIG_FILE_NAME = 'modules.json';
-    const REQUIRE_FILE = 'src/app.php';
 
     /**
      * @return array
