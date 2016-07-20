@@ -107,7 +107,7 @@ class Installer extends LibraryInstaller
      */
     protected function array_remove_object(&$array, $value, $prop)
     {
-        return array_filter($array, function ($a) use ($value, $prop) {
+        return array_filter($array, function($a) use ($value, $prop) {
             return $a[$prop] !== $value;
         });
     }
